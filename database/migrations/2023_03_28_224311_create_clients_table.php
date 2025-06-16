@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->id(); // Auto-incrementing primary key
             $table->enum('gender', ['Male', 'Female']);
-            $table->date("date_of_birth");
+            $table->date('date_of_birth');
             $table->string('avatar_image');
             $table->string('phone');
             $table->unsignedBigInteger('area_id');
-            $table->foreign('area_id')->references('id')->on('areas');
+            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
             $table->string('street_name');
             $table->integer('building_no');
             $table->integer('floor_number');
@@ -28,8 +28,7 @@ return new class extends Migration
             $table->boolean('is_main');
             $table->timestamp('email_verified_at')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -40,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('clients'); // Corrected table name
     }
 };
